@@ -7,6 +7,7 @@ import com.touchin.prosto.base.bottom.BaseContentBottom
 import com.touchin.prosto.base.fragment.BaseContentFragment
 import com.touchin.prosto.databinding.FragmentOfferDetailBinding
 import com.touchin.prosto.di.viewmodel.assistedViewModel
+import com.touchin.prosto.feature.list.OfferListViewModel
 
 @Suppress("TooManyFunctions")
 class OfferDetailFragment : BaseContentBottom<OfferDetailState, OfferDetailViewModel, OfferDetailController>(
@@ -23,7 +24,9 @@ class OfferDetailFragment : BaseContentBottom<OfferDetailState, OfferDetailViewM
     }
 
     override fun render(state: OfferDetailState, controller: OfferDetailController) {
+//        binding.headerView.initView(state.offer, controller::onF)
         binding.mainInfo.initView(state.offer)
-        binding.offerName.setText(R.string.app_name) // TODO
+        binding.offerName.text = state.offer.name
+        binding.
     }
 }
