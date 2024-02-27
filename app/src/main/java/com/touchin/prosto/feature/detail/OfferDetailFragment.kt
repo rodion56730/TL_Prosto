@@ -2,6 +2,7 @@ package com.touchin.prosto.feature.detail
 
 import androidx.navigation.fragment.navArgs
 import com.anadolstudio.core.viewbinding.viewBinding
+import com.google.android.material.snackbar.Snackbar
 import com.touchin.prosto.R
 import com.touchin.prosto.base.bottom.BaseContentBottom
 import com.touchin.prosto.base.fragment.BaseContentFragment
@@ -36,6 +37,11 @@ class OfferDetailFragment : BaseContentBottom<OfferDetailState, OfferDetailViewM
         binding.infoContainer.background = gradient
         binding.topLine.background = gradient
         binding.topLine.clipToOutline
+        if (!state.offer.isActive) {
+            binding.mainInfo.alpha = 0.5F
+            val inactiveSnackbar = Snackbar.make(binding.topLine.rootView, "Эта акция больше неактивна", Snackbar.LENGTH_LONG)
+            inactiveSnackbar.show()
+        }
 
     }
 }
