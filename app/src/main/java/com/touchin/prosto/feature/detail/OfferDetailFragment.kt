@@ -7,7 +7,7 @@ import com.touchin.prosto.base.bottom.BaseContentBottom
 import com.touchin.prosto.base.fragment.BaseContentFragment
 import com.touchin.prosto.databinding.FragmentOfferDetailBinding
 import com.touchin.prosto.di.viewmodel.assistedViewModel
-import com.touchin.prosto.feature.list.OfferListViewModel
+import com.touchin.prosto.util.GradientDrawable
 
 @Suppress("TooManyFunctions")
 class OfferDetailFragment : BaseContentBottom<OfferDetailState, OfferDetailViewModel, OfferDetailController>(
@@ -24,9 +24,18 @@ class OfferDetailFragment : BaseContentBottom<OfferDetailState, OfferDetailViewM
     }
 
     override fun render(state: OfferDetailState, controller: OfferDetailController) {
-//        binding.headerView.initView(state.offer, controller::onF)
+//        binding.headerView.favoriteButton.setOnClickListener { controller.onFavoriteChecked() }
+        binding.headerView.initView(state.offer) { controller.onFavoriteChecked() }
         binding.mainInfo.initView(state.offer)
         binding.offerName.text = state.offer.name
-        binding.
+        binding.longDesc.text = state.offer.longDescription
+        val gradient = GradientDrawable(
+            firstColor = state.offer.backgroundFirstColor,
+            secondColor = state.offer.backgroundSecondColor,
+        )
+        binding.infoContainer.background = gradient
+        binding.topLine.background = gradient
+        binding.topLine.clipToOutline
+
     }
 }
