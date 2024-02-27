@@ -37,5 +37,7 @@ class OfferHeaderView @JvmOverloads constructor(
             errorId = R.drawable.ic_offer_default_company_logo,
             placeholderId = R.drawable.ic_offer_default_company_logo,
         )
+
+
     }
 }

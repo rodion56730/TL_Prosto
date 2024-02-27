@@ -7,6 +7,7 @@ import com.anadolstudio.core.viewmodel.lce.lceFlow
 import com.anadolstudio.core.viewmodel.lce.mapLceContent
 import com.anadolstudio.core.viewmodel.lce.onEachContent
 import com.anadolstudio.core.viewmodel.lce.onEachError
+import com.touchin.data.repository.common.PreferencesStorage
 import com.touchin.domain.repository.offers.OffersRepository
 import com.touchin.prosto.R
 import com.touchin.prosto.base.viewmodel.BaseContentViewModel
@@ -31,7 +32,9 @@ class OfferListViewModel @Inject constructor(
 
     private fun loadOffers() {
         lceFlow { emit(offersRepository.getOfferList()) }
-            .mapLceContent { offers -> offers.map { it.toUi(isFavorite = false) } }
+            .mapLceContent { offers -> offers.map {
+                it.toUi(isFavorite = offersRepository.favoriteOffers.contains(it.id))
+            } }
             .onEach { updateState { copy(loadingState = it) } }
             .onEachContent { offers -> updateState { copy(offersList = offers) } }
             .onEachError { showError(it) }
@@ -45,7 +48,24 @@ class OfferListViewModel @Inject constructor(
         args = bundleOf(context.getString(R.string.navigation_offer) to offerUi)
     )
 
-    override fun onFavoriteChecked(offerUi: OfferUi) = showTodo()
+    override fun onFavoriteChecked(offerUi: OfferUi) {
+        if(!offerUi.isFavorite){
+            offersRepository.addOfferToFav(offerUi.id)
+        }else{
+            offersRepository.removeOfferFromFav(offerUi.id)
+        }
 
-    override fun onFavoriteFilterClicked() = showTodo()
-}
+       val res = state.offersList.toMutableList()
+            .map {
+               if( it.id == offerUi.id) {
+                   it.copy(isFavorite = !offerUi.isFavorite)
+               }else{
+                   it
+               }
+            }
+        updateState { copy(offersList = res) }
+
+
+    }
+
+    override fun onFavoriteFilterClicked() = showTodo()}

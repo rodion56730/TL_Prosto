@@ -22,7 +22,9 @@ class OfferListFragment : BaseContentFragment<OfferListState, OfferListViewModel
 
     override fun initView(controller: OfferListController) = with(binding) {
         toolbar.setBackClickListener { controller.onBackClicked() }
-        favoriteButton.setOnClickListener { controller.onFavoriteFilterClicked() }
+        favoriteButton.setOnClickListener {
+            controller.onFavoriteFilterClicked()
+        }
         initRecycler()
     }
 
