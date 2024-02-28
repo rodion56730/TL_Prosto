@@ -23,6 +23,9 @@ class BigOfferCardHolder(
 
             headerView.initView(offerItem, onFavoriteChecked)
             mainInfoView.initView(offerItem)
+            if (!offerItem.isActive) {
+                mainInfoView.alpha = 0.5F
+            }
 
             container.background = GradientDrawable(
                 firstColor = offerItem.backgroundFirstColor,
