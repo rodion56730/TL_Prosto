@@ -2,6 +2,7 @@ package com.touchin.prosto.feature.list
 
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.anadolstudio.core.util.common_extention.getCompatDrawable
 import com.anadolstudio.core.viewbinding.viewBinding
@@ -29,7 +30,11 @@ class OfferListFragment : BaseContentFragment<OfferListState, OfferListViewModel
             controller.onFavoriteFilterClicked()
         }
 
-        //favoriteButton.visibility = View.INVISIBLE
+        setFragmentResultListener("requestKey") { key, bundle ->
+            val ui = bundle.getParcelable<OfferUi>("extraKey")
+            if (ui != null) controller.onFavoriteChecked(ui)
+        }
+
         initRecycler()
     }
 
