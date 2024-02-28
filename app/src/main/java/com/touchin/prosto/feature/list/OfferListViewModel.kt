@@ -64,26 +64,17 @@ class OfferListViewModel @Inject constructor(
                }
             }
         updateState { copy(offersList = res) }
-
+        if(state.favoriteOfferListFiltered.isEmpty()){
+            updateState { copy(favListChecked = false) }
+        }
     }
 
-    var favListChecked = false
+
     override fun onFavoriteFilterClicked() {
-        if(!favListChecked) {
-            lceFlow { emit(offersRepository.getFavoriteOffersList()) }
-                .mapLceContent { offers ->
-                    offers.map {
-                        it.toUi(isFavorite = offersRepository.favoriteOffers.contains(it.id))
-                    }
-                }
-                .onEach { updateState { copy(loadingState = it) } }
-                .onEachContent { offers -> updateState { copy(offersList = offers) } }
-                .onEachError { showError(it) }
-                .launchIn(viewModelScope)
-            favListChecked = true
-        }else{
-            loadOffers()
-            favListChecked = false
+
+        updateState { copy(favListChecked = !favListChecked) }
+        if(state.favoriteOfferListFiltered.isEmpty()){
+            updateState { copy(favListChecked = false) }
         }
     }
 
