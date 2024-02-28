@@ -31,4 +31,7 @@ class OffersRepositoryImpl(
     }
 
     override suspend fun getOfferList(): List<OfferDomain> = api.getOfferList().map { it.toDomain() }
+    override suspend fun getFavoriteOffersList(): List<OfferDomain> = api.getOfferList().map { it.toDomain() }.filter {
+        preferencesStorage.favoriteOffersSet.contains(it.id)
+    }
 }

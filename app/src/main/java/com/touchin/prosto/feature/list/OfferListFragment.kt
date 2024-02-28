@@ -1,5 +1,6 @@
 package com.touchin.prosto.feature.list
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import com.anadolstudio.core.viewbinding.viewBinding
 import com.touchin.prosto.R
@@ -25,6 +26,7 @@ class OfferListFragment : BaseContentFragment<OfferListState, OfferListViewModel
         favoriteButton.setOnClickListener {
             controller.onFavoriteFilterClicked()
         }
+
         initRecycler()
     }
 

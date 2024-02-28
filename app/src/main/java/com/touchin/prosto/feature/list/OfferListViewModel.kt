@@ -7,7 +7,6 @@ import com.anadolstudio.core.viewmodel.lce.lceFlow
 import com.anadolstudio.core.viewmodel.lce.mapLceContent
 import com.anadolstudio.core.viewmodel.lce.onEachContent
 import com.anadolstudio.core.viewmodel.lce.onEachError
-import com.touchin.data.repository.common.PreferencesStorage
 import com.touchin.domain.repository.offers.OffersRepository
 import com.touchin.prosto.R
 import com.touchin.prosto.base.viewmodel.BaseContentViewModel
@@ -34,7 +33,8 @@ class OfferListViewModel @Inject constructor(
         lceFlow { emit(offersRepository.getOfferList()) }
             .mapLceContent { offers -> offers.map {
                 it.toUi(isFavorite = offersRepository.favoriteOffers.contains(it.id))
-            } }
+                }
+            }
             .onEach { updateState { copy(loadingState = it) } }
             .onEachContent { offers -> updateState { copy(offersList = offers) } }
             .onEachError { showError(it) }
@@ -65,7 +65,26 @@ class OfferListViewModel @Inject constructor(
             }
         updateState { copy(offersList = res) }
 
-
     }
 
-    override fun onFavoriteFilterClicked() = showTodo()}
+    var favListChecked = false
+    override fun onFavoriteFilterClicked() {
+        if(!favListChecked) {
+            lceFlow { emit(offersRepository.getFavoriteOffersList()) }
+                .mapLceContent { offers ->
+                    offers.map {
+                        it.toUi(isFavorite = offersRepository.favoriteOffers.contains(it.id))
+                    }
+                }
+                .onEach { updateState { copy(loadingState = it) } }
+                .onEachContent { offers -> updateState { copy(offersList = offers) } }
+                .onEachError { showError(it) }
+                .launchIn(viewModelScope)
+            favListChecked = true
+        }else{
+            loadOffers()
+            favListChecked = false
+        }
+    }
+
+}

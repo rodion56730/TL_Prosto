@@ -6,4 +6,5 @@ interface OffersRepository {
     fun addOfferToFav(offerID : String)
     fun removeOfferFromFav(offerID: String)
     suspend fun getOfferList(): List<OfferDomain>
+    suspend fun getFavoriteOffersList(): List<OfferDomain>
 }
