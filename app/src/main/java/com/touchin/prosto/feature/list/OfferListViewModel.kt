@@ -64,18 +64,17 @@ class OfferListViewModel @Inject constructor(
                }
             }
         updateState { copy(offersList = res) }
-
+        if(state.favoriteOfferListFiltered.isEmpty()){
+            updateState { copy(favListChecked = false) }
+        }
     }
 
 
     override fun onFavoriteFilterClicked() {
-        if(!state.favListChecked) {
-            val res = state.offersList.toMutableList().filter { offersRepository.favoriteOffers.contains(it.id) }
-            updateState { copy(offersList = res) }
-            state.favListChecked = true
-        }else{
-            loadOffers()
-            state.favListChecked = false
+
+        updateState { copy(favListChecked = !favListChecked) }
+        if(state.favoriteOfferListFiltered.isEmpty()){
+            updateState { copy(favListChecked = false) }
         }
     }
 
