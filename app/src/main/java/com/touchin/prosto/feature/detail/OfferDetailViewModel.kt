@@ -18,6 +18,8 @@ class OfferDetailViewModel @AssistedInject constructor(
 
     override fun onRetryClicked() = showTodo()
 
+    override fun onFavoriteChecked() = showTodo()
+
     override fun onBackClicked() = _navigationEvent.navigateUp()
 
     @AssistedFactory
