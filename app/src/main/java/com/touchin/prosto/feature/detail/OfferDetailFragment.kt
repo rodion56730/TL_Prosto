@@ -30,16 +30,13 @@ class OfferDetailFragment : BaseContentBottom<OfferDetailState, OfferDetailViewM
         binding.mainInfo.initView(state.offer)
         binding.offerName.text = state.offer.name
         binding.longDesc.text = state.offer.longDescription
-        val gradient = GradientDrawable(
+        binding.gradientBackground.background = GradientDrawable(
             firstColor = state.offer.backgroundFirstColor,
             secondColor = state.offer.backgroundSecondColor,
         )
-        binding.infoContainer.background = gradient
-        binding.topLine.background = gradient
-        binding.topLine.clipToOutline
         if (!state.offer.isActive) {
             binding.mainInfo.alpha = 0.5F
-            val inactiveSnackbar = Snackbar.make(binding.topLine.rootView, "Эта акция больше неактивна", Snackbar.LENGTH_LONG)
+            val inactiveSnackbar = Snackbar.make(binding.gradientBackground.rootView, "Эта акция больше неактивна", Snackbar.LENGTH_LONG)
             inactiveSnackbar.show()
         }
 
