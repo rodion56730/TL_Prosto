@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" >
 
         <com.anadolstudio.core.view.toolbar.ToolbarIconButton
-            android:id="@+id/favorite_button"
+            android:id="@+id/а"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:src="@drawable/ic_favorite_checked" />

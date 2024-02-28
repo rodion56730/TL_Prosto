@@ -67,23 +67,15 @@ class OfferListViewModel @Inject constructor(
 
     }
 
-    var favListChecked = false
+
     override fun onFavoriteFilterClicked() {
-        if(!favListChecked) {
-            lceFlow { emit(offersRepository.getFavoriteOffersList()) }
-                .mapLceContent { offers ->
-                    offers.map {
-                        it.toUi(isFavorite = offersRepository.favoriteOffers.contains(it.id))
-                    }
-                }
-                .onEach { updateState { copy(loadingState = it) } }
-                .onEachContent { offers -> updateState { copy(offersList = offers) } }
-                .onEachError { showError(it) }
-                .launchIn(viewModelScope)
-            favListChecked = true
+        if(!state.favListChecked) {
+            val res = state.offersList.toMutableList().filter { offersRepository.favoriteOffers.contains(it.id) }
+            updateState { copy(offersList = res) }
+            state.favListChecked = true
         }else{
             loadOffers()
-            favListChecked = false
+            state.favListChecked = false
         }
     }
 

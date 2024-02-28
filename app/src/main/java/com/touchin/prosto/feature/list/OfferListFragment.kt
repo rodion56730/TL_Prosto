@@ -27,6 +27,7 @@ class OfferListFragment : BaseContentFragment<OfferListState, OfferListViewModel
             controller.onFavoriteFilterClicked()
         }
 
+        //favoriteButton.visibility = View.INVISIBLE
         initRecycler()
     }
 
@@ -36,6 +37,7 @@ class OfferListFragment : BaseContentFragment<OfferListState, OfferListViewModel
         adapter = GroupieAdapter().apply {
             add(offersSection)
         }
+
     }
 
     override fun render(state: OfferListState, controller: OfferListController) {
