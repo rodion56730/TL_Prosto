@@ -1,6 +1,6 @@
 package com.touchin.prosto.feature.list
 
-import android.view.View
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.anadolstudio.core.viewbinding.viewBinding
 import com.touchin.prosto.R
@@ -25,6 +25,11 @@ class OfferListFragment : BaseContentFragment<OfferListState, OfferListViewModel
         toolbar.setBackClickListener { controller.onBackClicked() }
         favoriteButton.setOnClickListener {
             controller.onFavoriteFilterClicked()
+        }
+
+        setFragmentResultListener("requestKey") { key, bundle ->
+            val ui = bundle.getParcelable<OfferUi>("extraKey")
+            if (ui != null) controller.onFavoriteChecked(ui)
         }
 
         initRecycler()

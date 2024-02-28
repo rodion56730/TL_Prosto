@@ -1,11 +1,11 @@
 package com.touchin.prosto.feature.detail
 
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
 import com.anadolstudio.core.viewbinding.viewBinding
-import com.google.android.material.snackbar.Snackbar
 import com.touchin.prosto.R
 import com.touchin.prosto.base.bottom.BaseContentBottom
-import com.touchin.prosto.base.fragment.BaseContentFragment
 import com.touchin.prosto.databinding.FragmentOfferDetailBinding
 import com.touchin.prosto.di.viewmodel.assistedViewModel
 import com.touchin.prosto.util.GradientDrawable
@@ -25,8 +25,13 @@ class OfferDetailFragment : BaseContentBottom<OfferDetailState, OfferDetailViewM
     }
 
     override fun render(state: OfferDetailState, controller: OfferDetailController) {
-//        binding.headerView.favoriteButton.setOnClickListener { controller.onFavoriteChecked() }
-        binding.headerView.initView(state.offer) { controller.onFavoriteChecked() }
+        binding.headerView.initView(state.offer) {
+            controller.onFavoriteChecked()
+            setFragmentResult(
+                "requestKey",
+                bundleOf("extraKey" to state.offer)
+            )
+        }
         binding.mainInfo.initView(state.offer)
         binding.offerName.text = state.offer.name
         binding.longDesc.text = state.offer.longDescription
@@ -34,11 +39,7 @@ class OfferDetailFragment : BaseContentBottom<OfferDetailState, OfferDetailViewM
             firstColor = state.offer.backgroundFirstColor,
             secondColor = state.offer.backgroundSecondColor,
         )
-        if (!state.offer.isActive) {
-            binding.mainInfo.alpha = 0.5F
-            val inactiveSnackbar = Snackbar.make(binding.gradientBackground.rootView, "Эта акция больше неактивна", Snackbar.LENGTH_LONG)
-            inactiveSnackbar.show()
-        }
+        binding.mainInfo.alpha = if (!state.offer.isActive) 1.0F else 0.5F
 
     }
 }
