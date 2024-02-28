@@ -4,6 +4,7 @@ import android.content.Context
 import com.touchin.prosto.base.viewmodel.BaseContentViewModel
 import com.touchin.prosto.base.viewmodel.navigateUp
 import com.touchin.prosto.util.EmailUtil
+import com.touchin.prosto.util.SubjBodyUtil
 import com.touchin.prosto.util.sendEmail
 import javax.inject.Inject
 
@@ -18,19 +19,24 @@ class SupportViewModel @Inject constructor(
 
         sendEmail(
             context = context,
-            subject = "subject", // TODO необходимо изменить в рамках задачи
+            subject = state.subjectText,
             email = state.emailText,
-            body = "body" // TODO необходимо изменить в рамках задачи
+            body = state.bodyText
         )
     }
 
     override fun onEmailChanged(text: String) = updateState { copy(emailText = text, hasEmailError = false) }
+    override fun onSubjectChanged(text: String) = updateState { copy(subjectText = text, hasSubjectError = false) }
+    override fun onBodyChanged(text: String) = updateState { copy(bodyText = text, hasBodyError = false) }
 
     private fun hasErrors(): Boolean {
         val hasEmailError = !EmailUtil.EMAIL_PATTERN_REGEX.matches(state.emailText)
         updateState { copy(hasEmailError = hasEmailError) }
-
-        return listOf(hasEmailError).any { hasError -> hasError }
+        val hasSubjectError = state.subjectText.contains(SubjBodyUtil.SUBJECT_AND_BODY_REGEX)
+        updateState { copy(hasSubjectError = hasSubjectError) }
+        val hasBodyError = state.bodyText.contains(SubjBodyUtil.SUBJECT_AND_BODY_REGEX)
+        updateState { copy(hasBodyError = hasBodyError) }
+        return listOf(hasEmailError, hasSubjectError, hasBodyError).any { hasError -> hasError }
     }
 
     override fun onBackClicked() = _navigationEvent.navigateUp()

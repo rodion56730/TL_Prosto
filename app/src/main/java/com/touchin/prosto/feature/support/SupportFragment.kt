@@ -11,7 +11,8 @@ import com.touchin.prosto.databinding.FragmentSupportBinding
 import com.touchin.prosto.util.SimpleTextWatcher
 
 class SupportFragment :
-    BaseContentFragment<SupportState, SupportViewModel, SupportController>(R.layout.fragment_support) {
+    BaseContentFragment<SupportState,
+            SupportViewModel, SupportController>(R.layout.fragment_support) {
 
     private val binding: FragmentSupportBinding by viewBinding { FragmentSupportBinding.bind(requireView()) }
 
@@ -21,11 +22,16 @@ class SupportFragment :
         binding.toolbar.setBackClickListener(controller::onBackClicked)
         binding.sendButton.scaleAnimationOnClick { controller.onSendClicked() }
         binding.emailInput.afterTextChanged(controller::onEmailChanged)
+        binding.subjectInput.afterTextChanged(controller::onSubjectChanged)
+        binding.bodyInput.afterTextChanged(controller::onBodyChanged)
+
     }
 
     override fun render(state: SupportState, controller: SupportController) {
         binding.sendButton.isEnabled = state.sendButtonEnable
         binding.emailInput.showError(state.hasEmailError, R.string.common_email_error)
+        binding.subjectInput.showError(state.hasSubjectError, R.string.common_email_text_error)
+        binding.bodyInput.showError(state.hasBodyError, R.string.common_email_text_error)
     }
 
     private fun EditText.afterTextChanged(action: (String) -> Unit) {
